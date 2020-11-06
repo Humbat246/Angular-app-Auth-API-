@@ -1,0 +1,31 @@
+<section id="homePage">
+
+
+  <div class="col-md-8 col-lg-5">
+    <div class="content ">
+      <h1>Açıq məlumatlar portalı</h1>
+      <div class="form-group">
+        <input type="text" class="form-control" [(ngModel)]="searchText" (keyup)="searchService()"
+          placeholder="Axtarış üçün sözü daxil edin..">
+        <span class="material-icons searchIcon">search</span>
+      </div>
+
+
+      <div class="searchResult">
+        <ul class="list-group" *ngIf="services.length != 0">
+          <li class="list-group-item" *ngFor="let item of services">
+            <a href="" [routerLink]="['/Services/ServiceDetail/'+item.id]" routerLinkActive="router-link-active" >
+
+              {{item.name}}
+            </a>
+
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+
+
+</section>

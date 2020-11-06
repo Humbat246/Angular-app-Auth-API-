@@ -1,0 +1,195 @@
+<section id="serviceDetail">
+  <div class="pageSearch">
+    <div class="col-md-8 col-lg-5">
+      <div class="content ">
+        <div class="form-group" *ngIf="routeId !=2">
+          <input type="text" class="form-control" [(ngModel)]="searchText" placeholder="Axtarış üçün sözü daxil edin..">
+          <span (click)="getDataResult()" class="material-icons searchIcon">search</span>
+        </div>
+        <!-- Mobil nömrə daşınması xidməti vasitəsilə digər şəbəkəyə daşınmış nömrələr barədə məlumatın verilməsi -->
+        <div class="phoneNumberSearchArea" *ngIf="routeId==2">
+          <div class="form-group">
+            <select class="form-control" [(ngModel)]="phoneNum">
+              <option selected value="0">Secin</option>
+              <option value="050">050</option>
+              <option value="051">051</option>
+              <option value="055">055</option>
+              <option value="070">070</option>
+              <option value="077">077</option>
+            </select>
+            <input type="number" class="form-control" [(ngModel)]="searchText" placeholder="Nomreni daxil edin">
+
+
+
+          </div>
+          <button class="btn" (click)="getDataResult()">Yoxla</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mt-4 mb-4">
+        <li class="breadcrumb-item"><a href="#" [routerLink]="['/Home']" routerLinkActive="router-link-active">Home</a>
+        </li>
+        <li class="breadcrumb-item" aria-current="page"><a href="#" [routerLink]="['/Services']"
+            routerLinkActive="router-link-active">Services</a></li>
+        <li class="breadcrumb-item active" aria-current="page"> {{service.name}} </li>
+      </ol>
+    </nav>
+  </div>
+
+  <div *ngIf="statusMessage != null || dataArr.length != 0 || isLoading" class="container">
+
+
+
+    <div *ngIf="isLoading" class="text-center mt-5">
+      <app-loading-spinner></app-loading-spinner>
+    </div>
+
+    <div class="row serviceDataList" *ngIf="!isLoading">
+
+      <div *ngIf="statusMessage != null" class="col-md-12">
+        <div class="alert alert-danger text-center"> {{statusMessage}} </div>
+      </div>
+
+
+
+
+      <!-- Daxili və beynəlxalq pul baratları üzrə tariflər -->
+      <div class="col-md-12" *ngIf="routeId==1">
+
+        <table *ngFor="let section of tarifBaratObj.Body" class="table table-bordered ">
+          <caption> {{section['Name']}} - {{section['SectionNumber']}} </caption>
+          <thead>
+            <tr>
+              <th *ngFor="let headerName of tarifBaratObj.Header"> {{headerName}} </th>
+            </tr>
+
+          </thead>
+          <tbody *ngFor="let type of section['SectionTypes']['SectionType']">
+
+            <tr>
+              <td> {{type['TypeId']}} </td>
+              <td [ngClass]="{'mainTd': type['Items']['Item'].length != 0}"> {{type['TypeName']}} </td>
+              <td> {{type['Tariff']}} </td>
+            </tr>
+
+
+            <tr *ngFor="let item of type['Items']['Item']">
+              <td> {{type['TypeId']}}.{{item['ItemNumber']}} </td>
+              <td> {{item['Name']}} </td>
+              <td> {{item['Tariff']}} </td>
+            </tr>
+
+
+
+          </tbody>
+
+
+
+        </table>
+      </div>
+
+      <!-- Qisa nomrelerle bagli api -->
+      <div class="col-md-12" *ngIf="routeId==3">
+        <div class="serviceData" *ngFor="let data of dataArr">
+          <ul>
+            <li><strong>Name :</strong> {{data['Name']}} </li>
+            <li><strong>Bakı üçün tarif :</strong> {{data['TariffBaku']}} </li>
+            <li><strong>Rayonlar üçün tarif :</strong>{{data['TariffRegion']}} </li>
+
+          </ul>
+
+        </div>
+      </div>
+
+      <!-- olke daxili yiqim kodlari - seherler arasi kodlari -->
+      <div class="col-md-12" *ngIf="routeId==4">
+        <div class="serviceData" *ngFor="let data of dataArr">
+          <ul>
+            <li><strong>Şəhər :</strong> {{data['City']}} </li>
+          </ul>
+
+        </div>
+      </div>
+
+      <!-- Beynelxal olke kodlari -->
+      <div class="col-md-12" *ngIf="routeId==5">
+        <div class="serviceData" *ngFor="let data of dataArr">
+          <ul>
+            <li><strong>Ölkə :</strong> {{data['Country']}} </li>
+            <li><strong>Operator :</strong> {{data['Operator']}} </li>
+
+          </ul>
+
+        </div>
+      </div>
+
+
+      <!-- Kuce adlarina gore poct indekslerinin ve rayoun mueyyen edilmesi -->
+      <div class="col-md-12" *ngIf="routeId==6">
+
+        <table *ngIf="dataArr.length != 0" id="datatable" class="table table-bordered ">
+          <thead>
+            <tr>
+              <th>Küçə kodu</th>
+              <th>Ünvan</th>
+              <th>Postal Kodu</th>
+              <th>Şəhər</th>
+              <th>Rayon</th>
+
+            </tr>
+
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of dataArr">
+              <td> {{data['StreetCode']}} </td>
+              <td> {{data['Address']}} </td>
+              <td> {{data['PostalCode']}} </td>
+              <td> {{data['City']}} </td>
+              <td> {{data['Region']}} </td>
+
+
+            </tr>
+          </tbody>
+
+        </table>
+      </div>
+      <!-- Poçt indeksinə görə küçə adları, rayonun müəyyən edilməsi -->
+      <div class="col-md-12" *ngIf="routeId==7">
+
+        <table *ngIf="dataArr.length != 0" id="datatable" class="table table-bordered ">
+          <thead>
+            <tr>
+              <th>Küçə kodu</th>
+              <th>Ünvan</th>
+              <th>Şəhər</th>
+              <th>Rayon</th>
+
+            </tr>
+
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of dataArr">
+              <td> {{data['StreetCode']}} </td>
+              <td> {{data['Address']}} </td>
+              <td> {{data['City']}} </td>
+              <td> {{data['Region']}} </td>
+
+
+            </tr>
+          </tbody>
+
+        </table>
+      </div>
+
+
+
+
+    </div>
+  </div>
+</section>

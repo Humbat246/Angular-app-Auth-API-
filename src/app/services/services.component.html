@@ -1,0 +1,48 @@
+<section id="sevicesPage">
+  <div class="pageSearch">
+
+    <div class="col-md-8 col-lg-5">
+      <div class="content ">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Axtarış üçün sözü daxil edin..">
+          <span class="material-icons searchIcon">search</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+
+  <div class="container">
+
+
+
+  <nav aria-label="breadcrumb">
+    <ol  class="breadcrumb mt-4 mb-4">
+      <li class="breadcrumb-item"><a href="#" [routerLink]="['/Home']" routerLinkActive="router-link-active"  >Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Services</li>
+    </ol>
+  </nav>
+    <div class="row serviceList">
+
+      <div class="col-md-12" *ngFor="let serv of servicesArr">
+        <div  [routerLink]="['/Services/ServiceDetail/'+serv.id]"   class="service"  >
+          <h3> {{serv.name}} </h3>
+          <span class="watch" >
+            <span class="material-icons">
+              remove_red_eye
+              </span>
+              {{serv.watchCount}}
+          </span>
+        </div>
+      </div>
+
+
+
+
+    </div>
+  </div>
+
+
+</section>

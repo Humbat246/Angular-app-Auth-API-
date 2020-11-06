@@ -1,0 +1,28 @@
+.navbar {
+  background: transparent;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  padding: 1.5rem 0.5rem;
+  z-index: 1;
+
+
+  li {
+    a.nav-link {
+      color: #fff;
+      font-size: 18px;
+      font-weight: 500;
+      margin-right: 5px;
+      transition: all 0.3s;
+      border-bottom: 1px solid transparent;
+      &.active{
+        border-color: #fff;
+        
+      }
+
+      &:hover {
+        border-color: #fff;
+      }
+    }
+  }
+}
